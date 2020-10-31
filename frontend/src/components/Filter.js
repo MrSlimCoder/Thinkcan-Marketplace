@@ -9,7 +9,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { getCategories } from '../actions/categories';
 import { connect, useDispatch } from 'react-redux';
 
-const Filter = ({ getCategories, categories }) => {
+const Filter = ({ getCategories, categories, handleStateChanged,  products }) => {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
 
@@ -18,6 +18,8 @@ const Filter = ({ getCategories, categories }) => {
     };
 
     const handleClose = (event) => {
+
+        handleStateChanged(products.data,event.target.value);
 
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
@@ -45,7 +47,7 @@ const Filter = ({ getCategories, categories }) => {
         prevOpen.current = open;
 
         dispatch(getCategories)
-    }, [open]);
+    }, [open,dispatch,getCategories]);
     return (<div id="filter">
         <Button ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
@@ -77,7 +79,8 @@ const Filter = ({ getCategories, categories }) => {
 }
 
 const mapStateToProps = state => ({
-    categories: state.categories
+    categories: state.categories,
+    products: state.products,
 })
 
 

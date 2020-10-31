@@ -14,16 +14,27 @@ router.post('/login', function (req, res, next) {
   db.query(
     `SELECT * FROM ACCOUNT WHERE username = '${username}' AND PASSWORD = '${password}'`,
     (err, rows) => {
-      if (err) throw err;
+      if (err) res.send({
+        data: "Not Login",
+        success: false
+      });
       else if (rows) {
-        const token = 'Bearer '+jwt.sign({
-          accID: rows[0].accID
-        }, 'secret', { expiresIn: '5h' });
-        res.send({
-          data: rows,
-          token,
-          success: true
-        })
+        if (rows.length === 0) {
+          res.send({
+            data: "Not Login",
+            success: false
+          });
+        }
+        else {
+          const token = 'Bearer ' + jwt.sign({
+            accID: rows[0].accID
+          }, 'secret', { expiresIn: '5h' });
+          res.send({
+            data: rows,
+            token,
+            success: true
+          })
+        }
       }
       else res.send({
         data: "Not Login",
@@ -37,21 +48,35 @@ router.post('/login', function (req, res, next) {
 router.post('/signup', function (req, res, next) {
   const account = req.body;
   db.query('INSERT INTO ACCOUNT SET ? ', account, (err, data) => {
-    if (err) throw err;
+    if (err) res.send({
+      data: "Not Signup",
+      success: false
+    });
     else if (data) {
       db.query(
         `SELECT * FROM ACCOUNT WHERE username = '${account.username}'`,
         (err, rows) => {
-          if (err) throw err;
+          if (err) res.send({
+            data: "Not Signup",
+            success: false
+          });
           else if (rows) {
-            const token = 'Bearer '+jwt.sign({
-              accID: rows[0].accID
-            }, 'secret', { expiresIn: '5h' });
-            res.send({
-              data: rows,
-              token,
-              success: true
-            })
+            if (rows.length === 0) {
+              res.send({
+                data: "Not Signup",
+                success: false
+              });
+            }
+            else {
+              const token = 'Bearer ' + jwt.sign({
+                accID: rows[0].accID
+              }, 'secret', { expiresIn: '5h' });
+              res.send({
+                data: rows,
+                token,
+                success: true
+              })
+            }
           }
           else res.send({
             data: "Not Signup",
@@ -88,18 +113,18 @@ router.get('/product', function (req, res, next) {
 // Get Categories 
 router.get('/category', function (req, res, next) {
   db.query(
-      'SELECT * from Categories',
-      (err, data) => {
-          if (err) throw err;
-          else if (data) res.send({
-              data,
-              success: true
-          });
-          else res.send({
-              data: "Category Not Found",
-              success: false
-          });
-      }
+    'SELECT * from Categories',
+    (err, data) => {
+      if (err) throw err;
+      else if (data) res.send({
+        data,
+        success: true
+      });
+      else res.send({
+        data: "Category Not Found",
+        success: false
+      });
+    }
   );
 });
 

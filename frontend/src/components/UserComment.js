@@ -13,7 +13,7 @@ const Comment = ({ comment }) => {
                         <div id="icon"></div>
                     </Grid>
                     <Grid item xs={1}>
-                        <img src={comment?.productID?.image ? comment?.productID?.image : ProductImage} />
+                        <img src={comment?.productID?.image ? comment?.productID?.image : ProductImage} alt="Product" />
                     </Grid>
                     <Grid item xs={7} style={{ marginLeft: -50 }}>
                         <h3>{comment?.productID?.ProductName}</h3>

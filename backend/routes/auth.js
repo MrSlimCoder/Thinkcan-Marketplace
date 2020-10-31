@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../config/db.config");
-const multer  = require('multer')
+const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
 // Insert a product
@@ -29,15 +29,23 @@ router.get("/product/:productId", function (req, res, next) {
     db.query(
         `SELECT * FROM Product where productId = '${productId}'`,
         (err, doc) => {
-            if (err) throw err;
-            else if (doc.length) res.send({
-                data: doc,
-                success: true
-            });
-            else res.send({
-                data: "Product Not Found",
-                success: false
-            });
+            db.query(
+                `SELECT * FROM ACCOUNT where accID  = '${doc[0].sellerID}'`, (err, user) => {
+                    doc[0].sellerID = user[0].NAME;
+                    db.query(
+                        `SELECT * FROM Categories where categoryID = '${doc[0].categoryID}'`, (err, category) => {
+                            doc[0].categoryID = category[0].categoryName;
+                            if (err) throw err;
+                            else if (doc.length) res.send({
+                                data: doc,
+                                success: true
+                            });
+                            else res.send({
+                                data: "Product Not Found",
+                                success: false
+                            });
+                        })
+                })
         }
     );
 })

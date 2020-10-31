@@ -9,7 +9,7 @@ const Comments = ({ logins, userComments, userProducts }) => {
 
     useEffect(() => {
         dispatch(getUserComments(logins?.data.token, logins?.data.data[0]?.accID))
-    }, [])
+    }, [logins, dispatch])
     return (
         <>
 
@@ -18,7 +18,7 @@ const Comments = ({ logins, userComments, userProducts }) => {
                 <h3 id="heading">This is all your comments:</h3>
                 {
                     Array.isArray(userComments.data) ? userComments.data.map((comment, index) => {
-                        Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === comment.productID) { comment.productID = product } });
+                        Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === comment.productID) { comment.productID = product } return false });
                         return <Comment key={index} comment={comment} />
                     }) : <h3 id="heading">No Comments Found</h3>
                 }

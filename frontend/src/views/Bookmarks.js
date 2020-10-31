@@ -10,7 +10,7 @@ const Bookmarks = ({ logins, userBookmarks, userProducts, getUserBookmarks }) =>
 
     useEffect(() => {
         getUserBookmarks(logins?.data.token, logins?.data.data[0]?.accID)
-    }, [logins])
+    }, [logins,getUserBookmarks])
     return (
         <>
             <Header modal={() => { }} showButton={false} showUser={true} userInformations={logins?.data} />
@@ -27,7 +27,7 @@ const Bookmarks = ({ logins, userBookmarks, userProducts, getUserBookmarks }) =>
                     <Grid container style={{ marginTop: 20 }}>
                         {
                             Array.isArray(userBookmarks.data) ? userBookmarks.data.map((bookmark, index) => {
-                                Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === bookmark.productID) { bookmark.productID = product } });
+                                Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === bookmark.productID) { bookmark.productID = product } return false});
                                 return (< Grid item xs={2} key={index} style={{ paddingBottom: 50 }} >
                                     <CardComponent product={bookmark.productID} bookmark={true} />
                                 </Grid>)

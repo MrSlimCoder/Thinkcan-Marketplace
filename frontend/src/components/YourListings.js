@@ -4,7 +4,11 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Filter from "./Filter";
 
-const yourListings = ({ products }) => {
+const YourListings = ({ products, onUserProduct }) => {
+
+    const handleStateChanged = (previousProducts, value) => {
+        onUserProduct(products.data, value)
+    }
     return (
         <div id="yourListings">
             <Grid container>
@@ -13,7 +17,7 @@ const yourListings = ({ products }) => {
                 </Grid>
                 <Grid item xs={1} style={{ marginLeft: -20 }}>
                     <div>
-                        {Array.isArray(products.data) && <Filter />}
+                        {Array.isArray(products.data) && <Filter handleStateChanged={handleStateChanged} />}
                     </div>
                 </Grid>
             </Grid>
@@ -35,4 +39,4 @@ const yourListings = ({ products }) => {
     )
 }
 
-export default yourListings;
+export default YourListings;

@@ -13,10 +13,12 @@ import Button from "@material-ui/core/Button";
 import { setLogin } from "../actions/logins";
 import { setSignup } from "../actions/signups";
 import { useHistory } from "react-router";
+import { signout } from "../actions/signout";
 
-const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
+const Main = ({ getProducts, products, setLogin, setSignup, logins, signout, signups }) => {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
+    const [getProduct, setProducts] = React.useState(products.data);
     const history = useHistory();
 
     const handleChange = (event, newValue) => {
@@ -24,10 +26,14 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
     };
 
     React.useEffect(() => {
-        if (logins?.data?.data?.length > 0) {
+        if (logins.data.success) {
             history.push("/loggedIn")
         }
-    }, [logins])
+        else if (logins.data.data === "Not Login") {
+            alert("Unable To Login")
+            dispatch(signout)
+        }
+    }, [logins, dispatch, history, signout])
 
     function TabPanel(props) {
         const { children, value, index } = props;
@@ -45,7 +51,7 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
         setLogin(body);
     }
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         const signupUsername = document.getElementById("signupUsername").value;
         const signupPassword = document.getElementById("signupPassword").value;
         const signupName = document.getElementById("signupName").value;
@@ -56,10 +62,25 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
             NAME: signupName,
             addr: signupAddress
         }
-        setSignup(body);
-        alert("User Account Created");
+        await setSignup(body);
+        if (signups.data === "Not Signup") {
+            alert("Unable To Signup");
+        }
+        else {
+            alert("User Account Created");
+        }
     }
 
+    const handleStateChanged = (previousProducts, value) => {
+        let filteredProducts = []
+        getProduct.forEach((product) => {
+            if (product.categoryID === value.toString()) {
+                filteredProducts.push(product)
+            }
+        })
+        products.data = filteredProducts;
+        setProducts(previousProducts)
+    }
     const modalBody = () => {
         return <Paper square>
             <Tabs
@@ -92,7 +113,7 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
     }
     useEffect(() => {
         dispatch(getProducts)
-    }, [])
+    }, [getProducts, dispatch])
     return (
         <>
             <Header modal={
@@ -103,7 +124,7 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
             />
             <br />
             <div id="content">
-                {Array.isArray(products.data) && <Filter />}
+                {Array.isArray(products.data) && <Filter handleStateChanged={handleStateChanged} />}
                 <Grid container style={{ marginTop: 20 }}>
                     {products?.data && products.data.map((product, index) => (
                         <Grid item xs={2} key={index} style={{ paddingBottom: 50 }} >
@@ -117,8 +138,9 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins }) => {
 
 const mapStateToProps = state => ({
     products: state.products,
-    logins: state.logins
+    logins: state.logins,
+    signups: state.signups
 })
 
 
-export default connect(mapStateToProps, { getProducts, setLogin, setSignup })(Main)
+export default connect(mapStateToProps, { getProducts, setLogin, setSignup, signout })(Main)

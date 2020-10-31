@@ -9,7 +9,7 @@ const Offers = ({ logins, userOffers, userProducts }) => {
 
     useEffect(() => {
         dispatch(getUserOffers(logins?.data.token, logins?.data.data[0]?.accID))
-    }, [])
+    }, [logins, dispatch])
     return (
         <>
 
@@ -18,9 +18,12 @@ const Offers = ({ logins, userOffers, userProducts }) => {
                 <h3 id="heading">This is all your offers:</h3>
                 {
                     Array.isArray(userOffers.data) ? userOffers.data.map((offer, index) => {
-                        Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === offer.productID) { offer.productID = product } });
-                        return <Offer key={index} offer={offer} />
-                    }):  <h3 id="heading">No Offers Found</h3>
+                        let productwithOffers = {
+                            offers: []
+                        };
+                        Array.isArray(userProducts.data) && userProducts.data.filter((product) => { if (product.productID === offer.productID) { productwithOffers.offers.push(offer); productwithOffers = { ...product, offers: productwithOffers.offers } } return false });
+                        return <Offer key={index} product={productwithOffers} />
+                    }) : <h3 id="heading">No Offers Found</h3>
                 }
             </div>
         </>
