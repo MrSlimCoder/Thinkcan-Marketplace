@@ -235,3 +235,36 @@ body {
 }
 
 /* Product Details */
+#details #right {
+    background-color: lightgray;
+    margin-left: -230px;
+    height: 100%;
+    padding-left: 100px;
+}
+
+#details #logo {
+    border-radius: 50px;
+    background-color: darkgray;
+    width:50px;
+    height:50px;
+    margin-left:10px;
+}
+
+#details #right h3 {
+    font-family: monospace;
+    font-size: 40px
+}
+
+#details #right #sellerInfo {
+    padding-top:30px;
+}
+
+#details #right h5 {
+    font-size: 20px;
+}
+
+#details #right #productInfo svg {
+    width: 60px;
+    height: 100px;
+    padding-left: 200px;
+}

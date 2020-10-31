@@ -128,7 +128,7 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins, signout, sig
                 <Grid container style={{ marginTop: 20 }}>
                     {products?.data && products.data.map((product, index) => (
                         <Grid item xs={2} key={index} style={{ paddingBottom: 50 }} >
-                            <CardComponent product={product} />
+                            <CardComponent product={product} dontShowDetails={true} />
                         </Grid>))}
 
                 </Grid>

@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ProductImage from "./product.png";
 import Bookmarks from "../components/Bookmarks";
 import { useHistory } from "react-router";
+import ProductDetails from "../views/ProductDetails";
 
 const useStyles = makeStyles({
     root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 
-function CardComponent({ product, bookmark }) {
+function CardComponent({ product, bookmark, dontShowDetails }) {
     const history = useHistory();
     const classes = useStyles();
     return (
@@ -43,11 +44,17 @@ function CardComponent({ product, bookmark }) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <span style={{ fontSize: 10, marginLeft: 10 }} onClick={() => history.push("/details")}>
-                    View More >
-                </span>
+                {
+                    !dontShowDetails && <span style={{ fontSize: 10, marginLeft: 10 }} onClick={() => {
+                        history.push("/details", {
+                            product
+                        })
+                    }}>
+                        View More >
+                    </span>
+                }
                 {bookmark && <span style={{ marginLeft: '50%' }}>
-                <Bookmarks/>
+                    <Bookmarks />
                 </span>}
             </CardActions>
         </Card>
