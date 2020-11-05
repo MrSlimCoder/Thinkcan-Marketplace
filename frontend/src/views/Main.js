@@ -26,10 +26,10 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins, signout, sig
     };
 
     React.useEffect(() => {
-        if (logins.data.success) {
+        if (logins && logins.data && logins.data.success) {
             history.push("/loggedIn")
         }
-        else if (logins.data.data === "Not Login") {
+        else if (logins && logins.data && logins.data.data && logins.data.data === "Not Login") {
             alert("Unable To Login")
             dispatch(signout)
         }
@@ -126,7 +126,7 @@ const Main = ({ getProducts, products, setLogin, setSignup, logins, signout, sig
             <div id="content">
                 {Array.isArray(products.data) && <Filter handleStateChanged={handleStateChanged} />}
                 <Grid container style={{ marginTop: 20 }}>
-                    {products?.data && products.data.map((product, index) => (
+                    {Array.isArray(products.data) && products.data.map((product, index) => (
                         <Grid item xs={2} key={index} style={{ paddingBottom: 50 }} >
                             <CardComponent product={product} dontShowDetails={true} />
                         </Grid>))}

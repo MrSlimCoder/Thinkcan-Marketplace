@@ -10,7 +10,7 @@ const LoggedIn = ({ logins, userProducts }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUserProducts(logins?.data.token, logins?.data.data[0]?.accID));
-    }, [])
+    }, [dispatch,getUserProducts])
 
     const onUserProduct = (previousProducts, value) => {
         let filteredProducts = []

@@ -235,6 +235,10 @@ body {
 }
 
 /* Product Details */
+#backToListing::before {
+    content: "< ";
+}
+
 #details #right {
     background-color: lightgray;
     margin-left: -230px;
@@ -266,5 +270,54 @@ body {
 #details #right #productInfo svg {
     width: 60px;
     height: 100px;
-    padding-left: 200px;
+    margin-left: 200px;
+}
+
+/* Modals */
+#modalComment {
+    padding:100px;
+    background-color: lightgray;
+    width: 600px;
+}
+
+#modalComment {
+    text-align: center;
+}
+
+#modalComment textarea {
+    width:500px;
+    height:100px;
+    resize: none;
+}
+
+#modalComment button {
+    width:500px;
+    margin-top: 10px;
+}
+
+#modalOffer {
+    padding:100px;
+    background-color: lightgray;
+    width: 600px;
+}
+
+#modalOffer {
+    text-align: center;
+}
+
+#modalOffer input {
+    height:30px;
+    margin-left:10px;
+}
+
+#modalOffer h3 {
+    display: inline-block;
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+#modalOffer button {
+    width:200px;
+    margin-top: 10px;
 }

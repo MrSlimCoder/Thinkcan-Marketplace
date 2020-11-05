@@ -35,7 +35,7 @@ export default function SimpleModal({ modal, openModal, closeModal }) {
 
     useEffect(() => {
         setOpen(openModal)
-    },[openModal])
+    }, [openModal])
 
     const body = (
         <div style={modalStyle} className={classes.paper}>
