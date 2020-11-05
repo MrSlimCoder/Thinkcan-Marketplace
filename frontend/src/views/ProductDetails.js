@@ -83,7 +83,7 @@ const ProductDetails = ({ logins, postUserOffers, postUserComments, postUserBook
             }}>Post Offer</Button>
         </div>)
     }
-    if (productDetails.data) {
+    if (productDetails.data[0]) {
         return (
             <>
                 <Header modal={() => { }} showButton={false} showUser={logins} userInformations={logins?.data} />
